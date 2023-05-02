@@ -1,9 +1,5 @@
-// Init voice synthesis (text-to-speech)
-const synth = window.speechSynthesis
-voices = synth.getVoices()
-let v = []
-voices.forEach((el) => v.push(el))
-const enVoice = voices.filter((el) => { return el.lang == "en-US" })[0]
+let voices
+let synth
 
 // World population counter
 var timestamp1 = 1678265517712
@@ -23,7 +19,8 @@ var interval = setInterval(() => {
     var pop = spreadNumberString(popString)
     node.innerHTML = pop
 }, 600)
-// Second interval for glitch due to people dying as well
+
+// Second interval for glitches due to people dying as well
 // 470ms because in 51180 seconds, 108893 people had died on May 2nd 2023 14:13 UTC+2
 var interval2 = setInterval(() => {
     var pop = Number(node.innerHTML.replaceAll(" ", "")) - 1
@@ -51,6 +48,40 @@ let interval3 = setInterval(() => {
 // Listeners
 document.addEventListener("DOMContentLoaded", (ev) => {
 
+    // Init speech recognition
+    const SpeechRecognition = window.SpeechRecognition || webkitSpeechRecognition
+    const SpeechGrammarList = window.SpeechGrammarList || webkitSpeechGrammarList;
+    const SpeechRecognitionEvent = window.SpeechRecognitionEvent || webkitSpeechRecognitionEvent
+    const grammar =
+    "#JSGF V1.0; grammar colors; public <color> = aqua | azure | beige | bisque | black | blue | brown | chocolate | coral | crimson | cyan | fuchsia | ghostwhite | gold | goldenrod | gray | green | indigo | ivory | khaki | lavender | lime | linen | magenta | maroon | moccasin | navy | olive | orange | orchid | peru | pink | plum | purple | red | salmon | sienna | silver | snow | tan | teal | thistle | tomato | turquoise | violet | white | yellow ;"
+    const recognition = new SpeechRecognition()
+    const speechRecognitionList = new SpeechGrammarList()
+    speechRecognitionList.addFromString(grammar, 1)
+    recognition.grammars = speechRecognitionList
+    recognition.continuous = true
+    recognition.lang = "en-US"
+    recognition.interimResults = true
+    recognition.maxAlternatives = 1
+
+    document.body.onclick = () => {
+        recognition.start()
+        console.log("Ready to receive a color command.")
+    }
+    recognition.onresult = (event) => {
+        console.log(event.results)
+        //const color = event.results[0][0].transcript
+        //const confidence = event.results[0][0].confidence
+    }
+    recognition.onspeechend = () => {
+        recognition.stop()
+    }
+    recognition.onnomatch = () => {
+        diagnostic.textContent = "I didn't recognize that color."
+    }
+    recognition.onerror = (event) => {
+        diagnostic.textContent = `Error occurred in recognition: ${event.error}`
+    }
+
     // Input slider
     inputNode.addEventListener("input", (event) => {
         modulo = event.target.value
@@ -65,6 +96,13 @@ document.addEventListener("DOMContentLoaded", (ev) => {
             //This is incorrect. Human, please, make sense of 234
 
             frozen = true
+
+            // Init speech synthesis (text-to-speech)
+            synth = window.speechSynthesis
+            voices = synth.getVoices()
+            let v = []
+            voices.forEach((el) => v.push(el))
+            let enVoice = voices.filter((el) => { return el.lang == "en-GB" })[0]
 
             let textForUtterance = enVoice.name + " (" + enVoice.lang + ")"
             let message = "Now, human, please make sense of, " + capture
