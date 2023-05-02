@@ -1,3 +1,10 @@
+// Init voice synthesis (text-to-speech)
+const synth = window.speechSynthesis
+voices = synth.getVoices()
+let v = []
+voices.forEach((el) => v.push(el))
+const enVoice = voices.filter((el) => { return el.lang == "en-US" })[0]
+
 // World population counter
 var timestamp1 = 1678265517712
 var pop1 = 8020716316
@@ -26,26 +33,48 @@ var interval2 = setInterval(() => {
     }, 200)*/
 }, 940)
 
-// Text-to-speech
-//This is correct. Now, human, make sense of 124
-//This is incorrect. Human, please, make sense of 234
-
 // Capture display
 let modulo = 500
+let capture = 0
 let moduloNode = document.querySelector('#modulo span')
 let resultNode = document.querySelector('#result')
 let inputNode = document.querySelector('input#modulo-range')
+let frozen = false
 
+// Update modulo counter unless it's being captured (frozen)
 let interval3 = setInterval(() => {
-    let capture = Number(getPopValue().toString().substr(6, 4))
-
-    resultNode.innerHTML = 1 + (getPopValue() - 1) % modulo
+    if (frozen) return false
+    capture = 1 + (getPopValue() - 1) % modulo
+    resultNode.innerHTML = capture
 }, 100)
 
 // Listeners
 document.addEventListener("DOMContentLoaded", (ev) => {
+
+    // Input slider
     inputNode.addEventListener("input", (event) => {
         modulo = event.target.value
         moduloNode.innerHTML = "modulo " + modulo
     })
+
+    // Capture key
+    document.addEventListener("keydown", (event) => {
+        if (event.keyCode == 65) { // 'a'
+            // Text-to-speech
+            //This is correct. Now, human, make sense of 124
+            //This is incorrect. Human, please, make sense of 234
+
+            frozen = true
+
+            let textForUtterance = enVoice.name + " (" + enVoice.lang + ")"
+            let message = "Now, human, please make sense of, " + capture
+            const utterThis = new SpeechSynthesisUtterance(message)
+            utterThis.voice = enVoice; utterThis.pitch = .05; utterThis.rate = .8
+            utterThis.onend = (event) => { frozen = false }
+
+            synth.speak(utterThis)
+        }
+    })
 })
+
+
