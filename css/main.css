@@ -8,8 +8,9 @@ h1,
 h2,
 p,
 a {
-  font-family: Raleway, Comic Sans MS, serif;
+  font-family: 'Raleway', 'Comic Sans MS', serif;
   color: white;
+  text-align: center;
 }
 p {
   font-size: 2rem;
@@ -33,7 +34,6 @@ img {
 }
 #world-pop h2,
 #world-pop p {
-  text-align: center;
   margin: 0;
 }
 #world-pop h2 {
@@ -41,7 +41,26 @@ img {
   font-weight: 100;
 }
 #world-pop p {
-  font-size: 7rem;
-  font-family: 'Cormorant Garamond', Comic Sans MS, serif;
+  font-size: 6rem;
+  font-family: 'Raleway', 'Comic Sans MS', serif;
   font-weight: 300;
+}
+#capture {
+  margin-top: 4rem;
+}
+#capture p#modulo {
+  font-size: 1.8rem;
+  font-weight: 100;
+}
+#capture p#modulo span {
+  font-size: 3rem;
+  font-weight: 200;
+}
+#capture input {
+  width: 70%;
+}
+#capture p#result {
+  font-size: 10rem;
+  font-family: 'Cormorant Garamond', 'Comic Sans MS', serif;
+  margin-top: 0em;
 }

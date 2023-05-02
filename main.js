@@ -1,5 +1,4 @@
 // World population counter
-
 var timestamp1 = 1678265517712
 var pop1 = 8020716316
 var timestamp2 = 1680008052793
@@ -30,3 +29,23 @@ var interval2 = setInterval(() => {
 // Text-to-speech
 //This is correct. Now, human, make sense of 124
 //This is incorrect. Human, please, make sense of 234
+
+// Capture display
+let modulo = 500
+let moduloNode = document.querySelector('#modulo span')
+let resultNode = document.querySelector('#result')
+let inputNode = document.querySelector('input#modulo-range')
+
+let interval3 = setInterval(() => {
+    let capture = Number(getPopValue().toString().substr(6, 4))
+
+    resultNode.innerHTML = 1 + (getPopValue() - 1) % modulo
+}, 100)
+
+// Listeners
+document.addEventListener("DOMContentLoaded", (ev) => {
+    inputNode.addEventListener("input", (event) => {
+        modulo = event.target.value
+        moduloNode.innerHTML = "modulo " + modulo
+    })
+})
