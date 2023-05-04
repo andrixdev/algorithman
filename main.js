@@ -28,22 +28,25 @@ var interval2 = setInterval(() => {
 }, 940)
 
 // Capture display
-let modulo = 500
-let capture = 0
+let Picker = {}
+Picker.modulo = 500
+Picker.capture = 0
+Picker.captured = false
 let moduloNode = document.querySelector('#modulo span')
 let resultNode = document.querySelector('#result')
 let inputNode = document.querySelector('input#modulo-range')
-let frozen = false
 
-// Update modulo counter unless it's being captured (frozen)
+// Update modulo counter unless it's being captured
 let interval3 = setInterval(() => {
-    if (frozen) return false
-    capture = 1 + (getPopValue() - 1) % modulo
-    resultNode.innerHTML = capture
+    if (Picker.captured) return false
+    else {
+        Picker.capture = 1 + (getPopValue() - 1) % Picker.modulo
+        resultNode.innerHTML = Picker.capture
+    }
 }, 100)
 
 // Input slider
 inputNode.addEventListener("input", (event) => {
-    modulo = event.target.value
-    moduloNode.innerHTML = "modulo " + modulo
+    Picker.modulo = event.target.value
+    moduloNode.innerHTML = "modulo " + Picker.modulo
 })

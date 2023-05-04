@@ -39,10 +39,10 @@ let computeSpeech = (callback) => {
 
     // Get bit of speech before last 'check'
     let check = lastSpeech.toLowerCase().split('check') // Last element should be empty string [..., '']
+    log(check)
     let toCheck = ""
-    console.log(check)
-    if (check.length < 2) return false
-    if (check[check.length - 1] == '') {
+    if (check.length == 1) { toCheck = check[0] }
+    else if (check[check.length - 1] == '') {
         checkAsked = true
         toCheck = check[check.length - 2]
     } else {
@@ -82,6 +82,7 @@ let computeSpeech = (callback) => {
     let left = leftRight[0]
     numberToGuess = Number(left)
     parsedSpeech = left // Visual output
+    if (leftRight.length == 1 && checkAsked) Speech.sorry()
     if (leftRight.length == 2) {// '=' has been detected
         if (!guessingIsInit) {
             initGuessing(numberToGuess)
@@ -96,11 +97,9 @@ let computeSpeech = (callback) => {
         })
         parsedSpeech += ' = ' + factors.join(' x ')
 
-        if (checkAsked) {
-            factors.forEach((p) => {
-                handleNewPrime(Number(p))
-            })
-        }
+        factors.forEach((p) => {
+            handleNewPrime(Number(p), checkAsked)
+        })
     }
     
     callback()
@@ -121,10 +120,6 @@ recognition.lang = "en-US"
 recognition.interimResults = true
 recognition.maxAlternatives = 1
 
-document.body.onclick = () => {
-    recognition.start()
-    console.log("Ready to receive a color command.")
-}
 recognition.onresult = (event) => {
     rawSpeech = ""
     Array.from(event.results).forEach((result) => {
@@ -172,8 +167,19 @@ Speech.say = (message) => {
     synth.speak(utterThis)  
 }
 Speech.makeSenseOf = () => {
-    Speech.say("This is correct. Thank you. . . . Now, human, please make sense of, " + capture)
+    Speech.say("Now, human, please make sense of, " + Picker.capture)
+}
+Speech.correct = () => {
+    Speech.say('Correct. Thank you...')
 }
 Speech.incorrect = () => {
-    Speech.say("This is incorrect. Human, please, make sense of, " + capture)
+    Speech.say("Incorrect. Human, please, make sense of, " + Picker.capture)
+}
+Speech.sorry = () => {
+    Speech.say("Sorry, can you please repeat?")
+}
+
+document.body.onclick = () => {
+    recognition.start()
+    console.log("Speech recognition started.")
 }
