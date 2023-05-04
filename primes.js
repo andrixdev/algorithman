@@ -78,6 +78,12 @@ let handleNewPrime = (newPrime) => {
 	}
 
 }
-let handleCorrect = () => { console.log('Correct') }
-let handleIncorrect = () => { console.log('Incorrect') }
+let handleCorrect = () => {
+	console.log('Correct')
+	Speech.makeSenseOf()
+}
+let handleIncorrect = () => {
+	console.log('Incorrect')
+	Speech.incorrect()
+}
 

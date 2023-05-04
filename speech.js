@@ -1,3 +1,5 @@
+let Speech = {}
+Speech.frozen = false
 let voices
 let synth
 let rawSpeechNode = document.querySelector('p#raw-speech')
@@ -7,7 +9,7 @@ let parsedSpeech = ""
 
 // Speech parser
 let parseMap = [
-    ["one", "1"], ["two", "2"], ["to", "2"], ["three", "3"], ["four", "4"], ["five", "5"], ["six", "6"], ["seven", "7"], ["eight", "8"], ["nine", "9"], ["zero", "0"], ["oh", "0"],
+    ["one", "1"], ["two", "2"], ["to", "2"], ["three", "3"], ["four", "4"], ["for", "4"], ["five", "5"], ["six", "6"], ["seven", "7"], ["eight", "8"], ["nine", "9"], ["zero", "0"], ["oh", "0"],
     ["times", "x"],
     ["is", "="], ["equals", "="],
     ["Prime", "prime"]
@@ -22,6 +24,7 @@ let guessingIsInit = false
 let computeSpeech = (callback) => {
     let last = rawSpeech.split('reset')
     resetCount = last.length
+    let checkAsked = false
 
     // Maybe start new guessing!
     if (resetCount !== lastResetCount) {
@@ -32,15 +35,27 @@ let computeSpeech = (callback) => {
     }
 
     // Get bit of speech after last 'reset'
-    lastSpeech = last[last.length - 1] 
+    lastSpeech = last[last.length - 1]
+
+    // Get bit of speech before last 'check'
+    let check = lastSpeech.toLowerCase().split('check') // Last element should be empty string [..., '']
+    let toCheck = ""
+    console.log(check)
+    if (check.length < 2) return false
+    if (check[check.length - 1] == '') {
+        checkAsked = true
+        toCheck = check[check.length - 2]
+    } else {
+        toCheck = check[check.length - 1]
+    }
 
     // Translate into math with parseMap
     parseMap.forEach((transform) => {
-        lastSpeech = lastSpeech.replaceAll(transform[0], transform[1])
+        toCheck = toCheck.replaceAll(transform[0], transform[1])
     })
 
     // Remove spaces between numbers if no operator
-    let arr = lastSpeech.split(' ')
+    let arr = toCheck.split(' ')
     indexesOfElementsToRemove = []
     arr.forEach((bit, i) => {
         arr[i] = arr[i].replaceAll(',', '')
@@ -79,91 +94,86 @@ let computeSpeech = (callback) => {
         factors = factors.filter(el => {
             return el != '' && Number.isInteger(Number(el))
         })
-        factors.forEach((p) => {
-            handleNewPrime(Number(p))
-        })
         parsedSpeech += ' = ' + factors.join(' x ')
+
+        if (checkAsked) {
+            factors.forEach((p) => {
+                handleNewPrime(Number(p))
+            })
+        }
     }
     
     callback()
 }
 
-// Listeners
-document.addEventListener("DOMContentLoaded", (ev) => {
+// Init speech recognition
+const SpeechRecognition = window.SpeechRecognition || webkitSpeechRecognition
+const SpeechGrammarList = window.SpeechGrammarList || webkitSpeechGrammarList;
+const SpeechRecognitionEvent = window.SpeechRecognitionEvent || webkitSpeechRecognitionEvent
+const grammar =
+"#JSGF V1.0; grammar colors; public <color> = aqua | azure | beige | bisque | black | blue | brown | chocolate | coral | crimson | cyan | fuchsia | ghostwhite | gold | goldenrod | gray | green | indigo | ivory | khaki | lavender | lime | linen | magenta | maroon | moccasin | navy | olive | orange | orchid | peru | pink | plum | purple | red | salmon | sienna | silver | snow | tan | teal | thistle | tomato | turquoise | violet | white | yellow ;"
+const recognition = new SpeechRecognition()
+const speechRecognitionList = new SpeechGrammarList()
+speechRecognitionList.addFromString(grammar, 1)
+recognition.grammars = speechRecognitionList
+recognition.continuous = true
+recognition.lang = "en-US"
+recognition.interimResults = true
+recognition.maxAlternatives = 1
 
-    // Init speech recognition
-    const SpeechRecognition = window.SpeechRecognition || webkitSpeechRecognition
-    const SpeechGrammarList = window.SpeechGrammarList || webkitSpeechGrammarList;
-    const SpeechRecognitionEvent = window.SpeechRecognitionEvent || webkitSpeechRecognitionEvent
-    const grammar =
-    "#JSGF V1.0; grammar colors; public <color> = aqua | azure | beige | bisque | black | blue | brown | chocolate | coral | crimson | cyan | fuchsia | ghostwhite | gold | goldenrod | gray | green | indigo | ivory | khaki | lavender | lime | linen | magenta | maroon | moccasin | navy | olive | orange | orchid | peru | pink | plum | purple | red | salmon | sienna | silver | snow | tan | teal | thistle | tomato | turquoise | violet | white | yellow ;"
-    const recognition = new SpeechRecognition()
-    const speechRecognitionList = new SpeechGrammarList()
-    speechRecognitionList.addFromString(grammar, 1)
-    recognition.grammars = speechRecognitionList
-    recognition.continuous = true
-    recognition.lang = "en-US"
-    recognition.interimResults = true
-    recognition.maxAlternatives = 1
+document.body.onclick = () => {
+    recognition.start()
+    console.log("Ready to receive a color command.")
+}
+recognition.onresult = (event) => {
+    rawSpeech = ""
+    Array.from(event.results).forEach((result) => {
+        rawSpeech = rawSpeech.concat(result[0].transcript)
+    })
 
-    document.body.onclick = () => {
-        recognition.start()
-        console.log("Ready to receive a color command.")
-    }
-    recognition.onresult = (event) => {
-        rawSpeech = ""
-        Array.from(event.results).forEach((result) => {
-            rawSpeech = rawSpeech.concat(result[0].transcript)
-        })
-        let callback = () => {
-            rawSpeechNode.innerHTML = rawSpeech
-            parsedSpeechNode.innerHTML = parsedSpeech
-        }
-        computeSpeech(callback)
-        
-        //console.log(event.results)
-        //console.log(event.results[0][0].transcript + " | confidence " + event.results[0][0].confidence)
-    }
-    recognition.onspeechend = () => {
-        recognition.stop()
-    }
-    recognition.onnomatch = () => {
-        diagnostic.textContent = "I didn't recognize that color."
-    }
-    recognition.onerror = (event) => {
-        diagnostic.textContent = `Error occurred in recognition: ${event.error}`
+    let callback = () => {
+        rawSpeechNode.innerHTML = rawSpeech
+        parsedSpeechNode.innerHTML = parsedSpeech
     }
 
-    let makeSenseOf = () => {
-        // Text-to-speech
-        //This is correct. Now, human, make sense of 124
-        //This is incorrect. Human, please, make sense of 234
+    computeSpeech(callback)
+}
+recognition.onspeechend = () => {
+    //recognition.stop()
+}
+recognition.onnomatch = () => {
+    //diagnostic.textContent = "I didn't recognize that color."
+}
+recognition.onerror = (event) => {
+    console.log(`Error occurred in recognition: ${event.error}`)
+}
 
-        frozen = true
+Speech.say = (message) => {
+    if (Speech.frozen) return false // Avoids stacking of instructions
 
-        // Init speech synthesis (text-to-speech)
-        synth = window.speechSynthesis
-        voices = synth.getVoices()
-        let v = []
-        voices.forEach((el) => v.push(el))
-        let enVoice = voices.filter((el) => { return el.lang == "en-GB" })[0]
+    Speech.frozen = true
 
-        let textForUtterance = enVoice.name + " (" + enVoice.lang + ")"
-        let message = "Now, human, please make sense of, " + capture
-        const utterThis = new SpeechSynthesisUtterance(message)
-        utterThis.voice = enVoice; utterThis.pitch = .05; utterThis.rate = .8
-        utterThis.onend = (event) => { frozen = false }
+    // Init speech synthesis (text-to-speech)
+    synth = window.speechSynthesis
+    voices = synth.getVoices()
+    let v = []
+    voices.forEach((el) => v.push(el))
+    //let enVoice = voices.filter((el) => { return el.name == "Google UK English Female" })[0]
+    //let enVoice = voices.filter((el) => { return el.name == "Google US English" })[0]
+    let enVoice = voices.filter((el) => { return el.name == "Google UK English Male" })[0]
+    console.log(voices)
 
-        synth.speak(utterThis)
+    //let textForUtterance = enVoice.name + " (" + enVoice.lang + ")"
+    const utterThis = new SpeechSynthesisUtterance(message)
+    utterThis.voice = enVoice; utterThis.pitch = 1; utterThis.rate = 1
+    utterThis.onend = (event) => {
+        Speech.frozen = false
     }
-    
-    // Capture key
-    /*document.addEventListener("keydown", (event) => {
-        if (event.keyCode == 65) { // 'a'
-
-            
-        }
-    })*/
-})
-
-
+    synth.speak(utterThis)  
+}
+Speech.makeSenseOf = () => {
+    Speech.say("This is correct. Thank you. . . . Now, human, please make sense of, " + capture)
+}
+Speech.incorrect = () => {
+    Speech.say("This is incorrect. Human, please, make sense of, " + capture)
+}

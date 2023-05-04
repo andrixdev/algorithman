@@ -42,14 +42,6 @@ let interval3 = setInterval(() => {
     resultNode.innerHTML = capture
 }, 100)
 
-// Listeners
-document.addEventListener("DOMContentLoaded", (ev) => {
-
-    
-
-})
-
-
 // Input slider
 inputNode.addEventListener("input", (event) => {
     modulo = event.target.value
