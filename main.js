@@ -1,5 +1,5 @@
 let Picker = {}
-Picker.numberOfEmphasizedDigits = 3
+Picker.numberOfEmphasizedDigits = 4
 
 // World population counter
 let timestamp1 = 1678265517712
@@ -47,15 +47,18 @@ Picker.sliderVisible = false
 Picker.captured = true
 let processingNode = document.querySelector('#processing')
 let worldPopNode = document.querySelector('#world-pop')
+Picker.captureNext = () => {
+    let noed = Picker.numberOfEmphasizedDigits
+    Picker.next = Number(getPopValue().toString().substr(10 - noed, noed))
+    processingNode.innerHTML = Picker.next
+}
 
 // Update capturable figure (just front refresh)
 let interval3 = setInterval(() => {
     if (Picker.captured) return false
     else {
-        processingNode.innerHTML = getPopValue().toString().substr(7, 3)
+        let noed = Picker.numberOfEmphasizedDigits
+        processingNode.innerHTML = Number(getPopValue().toString().substr(10 - noed, noed))
     }
 }, 200)
-Picker.captureNext = () => {
-    Picker.next = getPopValue().toString().substr(7, 3)
-    processingNode.innerHTML = Picker.next
-}
+
