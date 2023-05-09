@@ -61,8 +61,8 @@ img {
 }
 #world-pop p span {
   color: var(--intense-text-color);
-  font-family: 'Cormorant Garamond', 'Comic Sans MS', serif;
-  font-size: 8rem;
+  /*font-family: 'Cormorant Garamond', 'Comic Sans MS', serif;
+            font-size: 8rem;*/
 }
 #capture {
   margin-top: 4rem;

@@ -1,32 +1,47 @@
-// World population counter
-var timestamp1 = 1678265517712
-var pop1 = 8020716316
-var timestamp2 = 1680008052793
-var pop2 = 8024412581
-var speed = (pop2 - pop1) / (timestamp2 - timestamp1)
+let Picker = {}
+Picker.numberOfEmphasizedDigits = 3
 
-var getPopValue = () => { return Math.round(pop1 + (new Date().getTime() - timestamp1) * speed) }
-let spreadNumberString = (nb) => {
-    return nb.substr(0, 1) + " " + nb.substr(1, 3) + " " + nb.substr(4, 3) + " <span>" + nb.substr(7, 3) + "</span>"
+// World population counter
+let timestamp1 = 1678265517712
+let pop1 = 8020716316
+let timestamp2 = 1680008052793
+let pop2 = 8024412581
+let speed = (pop2 - pop1) / (timestamp2 - timestamp1)
+
+let getPopValue = () => {
+    return Math.round(pop1 + (new Date().getTime() - timestamp1) * speed)
 }
-var node = document.querySelector('p#pop-counter')
-var interval = setInterval(() => {
-    var popValue = getPopValue()
-    var popString = popValue.toString()
-    var pop = spreadNumberString(popString)
+
+Picker.spreadNumberString = (nb) => {
+    let noed = Picker.numberOfEmphasizedDigits
+    let spread = nb.substr(0, 1) + " " + nb.substr(1, 3) + " " + nb.substr(4, 3) + " " + nb.substr(7, 3)
+    let len = spread.length
+
+    if (noed == 2) result = spread.substr(0, len - 2) + "<span>" + spread.substr(len - 2, 2)
+    else if (noed == 3) result = spread.substr(0, len - 3) + "<span>" + spread.substr(len - 3, 3)
+    else if (noed == 4) result = spread.substr(0, len - 5) + "<span>" + spread.substr(len - 5, 5)
+
+    result += "</span>"
+
+    return result
+}
+let node = document.querySelector('p#pop-counter')
+let interval = setInterval(() => {
+    let popValue = getPopValue()
+    let popString = popValue.toString()
+    let pop = Picker.spreadNumberString(popString)
     node.innerHTML = pop
-}, 600)
+}, 200)
 
 // Second interval for glitches due to people dying as well
 // 470ms because in 51180 seconds, 108893 people had died on May 2nd 2023 14:13 UTC+2
-var interval2 = setInterval(() => {
-    var popValue = getPopValue()
-    var popString = popValue.toString()
-    node.innerHTML = spreadNumberString(popString)
+let interval2 = setInterval(() => {
+    let popValue = getPopValue()
+    let popString = popValue.toString()
+    node.innerHTML = Picker.spreadNumberString(popString)
 }, 940)
 
 // Capture display
-let Picker = {}
 Picker.next = 1
 Picker.sliderVisible = false
 Picker.captured = true
@@ -39,7 +54,7 @@ let interval3 = setInterval(() => {
     else {
         processingNode.innerHTML = getPopValue().toString().substr(7, 3)
     }
-}, 100)
+}, 200)
 Picker.captureNext = () => {
     Picker.next = getPopValue().toString().substr(7, 3)
     processingNode.innerHTML = Picker.next
