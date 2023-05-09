@@ -1,6 +1,7 @@
 :root {
   --background-color: black;
-  --text-color: white;
+  --text-color: #DDD;
+  --intense-text-color: white;
   --faint-text-color: #AAA;
 }
 html,
@@ -11,7 +12,9 @@ body {
 }
 html.white-theme {
   --background-color: #EAEAEA;
-  --text-color: #0A0A0A;
+  --text-color: #2A2A2A;
+  --intense-text-color: #0A0A0A;
+  --faint-text-color: #888;
 }
 h1,
 h2,
@@ -38,11 +41,33 @@ img {
 .flexcenter {
   align-items: center;
 }
+#world-pop {
+  padding-top: 5rem;
+}
+#world-pop h2,
+#world-pop p {
+  margin: 0;
+}
+#world-pop h2 {
+  font-size: 3rem;
+  font-weight: 100;
+  color: var(--text-color);
+}
+#world-pop p {
+  font-size: 6rem;
+  font-family: 'Raleway', 'Comic Sans MS', serif;
+  font-weight: 300;
+  color: var(--faint-text-color);
+}
+#world-pop p span {
+  color: var(--intense-text-color);
+  font-family: 'Cormorant Garamond', 'Comic Sans MS', serif;
+  font-size: 8rem;
+}
 #capture {
   margin-top: 4rem;
 }
-#capture p#modulo {
-  font-size: 3rem;
+#capture p#now {
   font-weight: 200;
   margin-bottom: 0;
 }
@@ -52,8 +77,8 @@ img {
   margin-top: 0em;
   margin-bottom: 0.2em;
 }
-#capture input {
-  width: 70%;
+#capture #raw-speech {
+  display: none;
 }
 #next {
   position: relative;
@@ -68,35 +93,6 @@ img {
 }
 #next p#slider-number.hidden {
   opacity: 0;
-}
-#world-pop {
-  transition: opacity 1s;
-  top: -130px;
-  left: 0px;
-  position: absolute;
-}
-#world-pop.hidden {
-  opacity: 0;
-}
-#world-pop h2,
-#world-pop p {
-  margin: 0;
-  color: var(--faint-text-color);
-  display: inline-block;
-  vertical-align: middle;
-  font-size: 20px !important;
-}
-#world-pop h2 {
-  font-size: 30px;
-  font-weight: 100;
-}
-#world-pop p {
-  font-size: 100px;
-  font-family: 'Raleway', 'Comic Sans MS', serif;
-  font-weight: 300;
-}
-#world-pop p span {
-  color: var(--text-color);
 }
 img#qr {
   width: 120px;

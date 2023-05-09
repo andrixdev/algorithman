@@ -1,6 +1,7 @@
 :root {
     --background-color: black;
-    --text-color: white;
+    --text-color: #DDD;
+    --intense-text-color: white;
     --faint-text-color: #AAA;
 }
 html, body {
@@ -10,7 +11,9 @@ html, body {
 }
 html.white-theme {
     --background-color: #EAEAEA;
-    --text-color: #0A0A0A;
+    --text-color: #2A2A2A;
+    --intense-text-color: #0A0A0A;
+    --faint-text-color: #888;
 }
 h1, h2, p, a {
 	font-family: 'Raleway', 'Comic Sans MS', serif;
@@ -35,12 +38,34 @@ img {
 	align-items: center;
 }
 
+#world-pop {
+    padding-top: 5rem;
 
+    h2, p {
+        margin: 0;
+    }
+    h2 {
+        font-size: 3rem;
+        font-weight: 100;
+        color: var(--text-color)
+    }
+    p {
+        font-size: 6rem;
+        font-family: 'Raleway', 'Comic Sans MS', serif;
+        font-weight: 300;
+        color: var(--faint-text-color);
+
+        span {
+            color: var(--intense-text-color);
+            font-family: 'Cormorant Garamond', 'Comic Sans MS', serif;
+            font-size: 8rem;
+        }
+    }
+}
 #capture {
     margin-top: 4rem;
 
-    p#modulo {
-        font-size: 3rem;
+    p#now {
         font-weight: 200;
         margin-bottom: 0;
     }
@@ -50,8 +75,8 @@ img {
         margin-top: 0em;
         margin-bottom: .2em;
     }
-    input {
-        width: 70%;
+    #raw-speech {
+        display: none;
     }
 }
 #next {
@@ -70,37 +95,7 @@ img {
         }
     }
 }
-#world-pop {
-    transition: opacity 1s;
-    top: -130px;
-    left: 0px;
-    position: absolute;
 
-    &.hidden {
-        opacity: 0;
-    }
-
-    h2, p {
-        margin: 0;
-        color: var(--faint-text-color);
-        display: inline-block;
-        vertical-align: middle;
-        font-size: 20px !important;
-    }
-    h2 {
-        font-size: 30px;
-        font-weight: 100;
-    }
-    p {
-        font-size: 100px;
-        font-family: 'Raleway', 'Comic Sans MS', serif;
-        font-weight: 300;
-
-        span {
-            color: var(--text-color);
-        }
-    }
-}
 img#qr {
     width: 120px;
     height: 120px;

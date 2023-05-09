@@ -1,5 +1,6 @@
 let Speech = {}
 Speech.frozen = false
+Speech.pauseComputing = false
 let voices
 let synth
 let rawSpeechNode = document.querySelector('p#raw-speech')
@@ -17,30 +18,31 @@ let parseMap = [
 let currentOperation = []
 let numberToGuess
 let currentGuess
-let resetCount = 0
-let lastResetCount = 0
+let okCount = 0
+let lastOKCount = 0
 let guessingIsInit = false
 
 let computeSpeech = (callback) => {
-    let last = rawSpeech.split('reset')
-    resetCount = last.length
-    let checkAsked = false
+    if (Speech.pauseComputing) return false
+    let last = rawSpeech.toLowerCase().split('ok')
+    okCount = last.length
 
     // Maybe start new guessing!
-    if (resetCount !== lastResetCount) {
+    if (okCount !== lastOKCount) {
         numberToGuess = undefined
         resetGuessing()
         guessingIsInit = false
-        lastResetCount == resetCount
+        lastOKCount == okCount
     }
 
-    // Get bit of speech after last 'reset'
+    // Get bit of speech after last 'ok'
     lastSpeech = last[last.length - 1]
 
     // Get bit of speech before last 'check'
     let check = lastSpeech.toLowerCase().split('check') // Last element should be empty string [..., '']
     log(check)
     let toCheck = ""
+    let checkAsked = false
     if (check.length == 1) { toCheck = check[0] }
     else if (check[check.length - 1] == '') {
         checkAsked = true
@@ -82,7 +84,7 @@ let computeSpeech = (callback) => {
     let left = leftRight[0]
     numberToGuess = Number(left)
     parsedSpeech = left // Visual output
-    if (leftRight.length == 1 && checkAsked) Speech.sorry()
+    if (leftRight.length == 1) { }
     if (leftRight.length == 2) {// '=' has been detected
         if (!guessingIsInit) {
             initGuessing(numberToGuess)
@@ -97,9 +99,12 @@ let computeSpeech = (callback) => {
         })
         parsedSpeech += ' = ' + factors.join(' x ')
 
-        factors.forEach((p) => {
-            handleNewPrime(Number(p), checkAsked)
-        })
+        // Wait until detection of 'check' to compute the operation
+        if (checkAsked) {
+            factors.forEach((p) => {
+                handleNewPrime(Number(p))
+            })
+        }
     }
     
     callback()
@@ -154,29 +159,26 @@ Speech.say = (message) => {
     let v = []
     voices.forEach((el) => v.push(el))
     //let enVoice = voices.filter((el) => { return el.name == "Google UK English Female" })[0]
-    //let enVoice = voices.filter((el) => { return el.name == "Google US English" })[0]
+    //let enVoice = voices.filter((el) => { return el.name == "Microsoft David" })[0]
     let enVoice = voices.filter((el) => { return el.name == "Google UK English Male" })[0]
     console.log(voices)
 
     //let textForUtterance = enVoice.name + " (" + enVoice.lang + ")"
     const utterThis = new SpeechSynthesisUtterance(message)
-    utterThis.voice = enVoice; utterThis.pitch = 1; utterThis.rate = 1
+    utterThis.voice = enVoice; utterThis.pitch = .31; utterThis.rate = 1
     utterThis.onend = (event) => {
         Speech.frozen = false
     }
     synth.speak(utterThis)  
 }
 Speech.makeSenseOf = () => {
-    Speech.say("Now, human, please make sense of, " + Picker.capture)
+    Speech.say("Now, human, please make sense of, " + Picker.next)
 }
 Speech.correct = () => {
     Speech.say('Correct. Thank you...')
 }
 Speech.incorrect = () => {
-    Speech.say("Incorrect. Human, please, make sense of, " + Picker.capture)
-}
-Speech.sorry = () => {
-    Speech.say("Sorry, can you please repeat?")
+    Speech.say("Incorrect. Human, please, make sense of, " + Picker.next)
 }
 
 document.body.onclick = () => {

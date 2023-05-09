@@ -60,7 +60,7 @@ let decompose = (n) => {
 	return factors
 }
 
-let handleNewPrime = (newPrime, validationAsked) => {
+let handleNewPrime = (newPrime) => {
 	let prime = newPrime
 	if (ntgDecompositionLeftToFind.includes(prime)) {
 		
@@ -73,19 +73,33 @@ let handleNewPrime = (newPrime, validationAsked) => {
 		if (ltf.length == 0) {
 			handleCorrect()
 		}
-	} else if (validationAsked) {
+	} else {
 		handleIncorrect()
 	}
 }
 let handleCorrect = () => {
 	console.log('Correct')
-	Picker.captured = false
 	Speech.correct()
-
+	Speech.pauseComputing = true
+	
 	setTimeout(() => {
-		Speech.makeSenseOf()
-		Picker.captured = true
-	}, 5000)
+		Picker.captured = false
+
+		setTimeout(() => {
+			Picker.captured = true
+			Picker.captureNext()
+			setTimeout(() => {
+				Speech.makeSenseOf() // Lasts about 4500ms
+				setTimeout(() => {
+					Speech.pauseComputing = false
+				}, 4500)
+			}, 1000)
+			
+		}, 2500)
+
+	}, 2000)
+
+	
 }
 let handleIncorrect = () => {
 	console.log('Incorrect')

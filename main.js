@@ -27,39 +27,20 @@ var interval2 = setInterval(() => {
 
 // Capture display
 let Picker = {}
-Picker.modulo = 500
-Picker.next = 563
+Picker.next = 1
 Picker.sliderVisible = false
 Picker.captured = true
-let moduloNode = document.querySelector('#modulo span')
 let processingNode = document.querySelector('#processing')
-let inputNode = document.querySelector('input#modulo-range')
 let worldPopNode = document.querySelector('#world-pop')
-let sliderNumberNode = document.querySelector('#slider-number')
 
-// Update capturable figure
+// Update capturable figure (just front refresh)
 let interval3 = setInterval(() => {
     if (Picker.captured) return false
     else {
-        Picker.next = "43" + getPopValue().toString().substr(8, 2) //1 + (getPopValue() - 1) % Picker.modulo
-        processingNode.innerHTML = Picker.next
+        processingNode.innerHTML = getPopValue().toString().substr(7, 3)
     }
 }, 100)
-
-// Input slider
-inputNode.addEventListener("input", (event) => {
-    // Show slider if not already visible
-    if (!Picker.sliderVisible) {
-        Picker.sliderVisible = true
-        Picker.showSlider()
-    }
-    Picker.next = event.target.value
-    sliderNumberNode.innerHTML = Picker.next
-})
-Picker.showSlider = () => {
-    worldPopNode.classList = "hidden"
-    setTimeout(() => {
-        sliderNumberNode.classList = ""
-    }, 1000)
-    
+Picker.captureNext = () => {
+    Picker.next = getPopValue().toString().substr(7, 3)
+    processingNode.innerHTML = Picker.next
 }
