@@ -1,5 +1,5 @@
 let Picker = {}
-Picker.numberOfEmphasizedDigits = 4
+Picker.numberOfEmphasizedDigits = 2
 
 // World population counter
 let timestamp1 = 1678265517712

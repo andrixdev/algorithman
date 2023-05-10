@@ -40,7 +40,7 @@ let computeSpeech = (callback) => {
 
     // Get bit of speech before last 'check'
     let check = lastSpeech.toLowerCase().split('check') // Last element should be empty string [..., '']
-    log(check)
+    //log('check: ', check)
     let toCheck = ""
     let checkAsked = false
     if (check.length == 1) { toCheck = check[0] }
@@ -58,15 +58,21 @@ let computeSpeech = (callback) => {
 
     // Remove spaces between numbers if no operator
     let arr = toCheck.split(' ')
+	
+	
+	log('arr:', arr)
+	
+	// Filter content
     indexesOfElementsToRemove = []
     arr.forEach((bit, i) => {
         arr[i] = arr[i].replaceAll(',', '')
         arr[i] = arr[i].replaceAll('.', '')
+		
         if (bit == ' ') {
             if (i > 0 && i < (arr.length - 1) && Number.isInteger(Number(arr[i-1])) && Number.isInteger(Number(arr[i+1]))) {
                 indexesOfElementsToRemove.push(i)
             }
-        } else if (bit != 'x' && bit != '=' && !Number.isInteger(Number(bit))) {
+        } else if (bit != 'x' && bit != '=' && bit != 'prime' && !Number.isInteger(Number(bit))) {
             indexesOfElementsToRemove.push(i)
         }
     })
@@ -78,6 +84,8 @@ let computeSpeech = (callback) => {
         })
         return !isToRemove
     })
+	
+	log('cleanArr: ', cleanArr)
 
     // Create operation chain
     let leftRight = cleanArr.join('').split('=')
@@ -92,11 +100,17 @@ let computeSpeech = (callback) => {
         }
         let right = leftRight[1]
         currentGuess = right
+		
+		// If prime, copy left term of equation (number to guess)
+		if (currentGuess.includes('prime')) currentGuess = left
+		
+        // Extract only numbers for prime validation (no 'x' or '')
         let factors = currentGuess.split('x')
-        // Extract only numbers (no 'x' or '')
         factors = factors.filter(el => {
             return el != '' && Number.isInteger(Number(el))
         })
+		
+		// Display factors in right term of equation with 'x' characters
         parsedSpeech += ' = ' + factors.join(' x ')
 
         // Wait until detection of 'check' to compute the operation
@@ -145,7 +159,9 @@ recognition.onnomatch = () => {
     //diagnostic.textContent = "I didn't recognize that color."
 }
 recognition.onerror = (event) => {
-    console.log(`Error occurred in recognition: ${event.error}`)
+	let msg = `Error occurred in recognition: ${event.error}`
+    console.log(msg)
+	setTimeout(() => { Speech.say(msg) }, 5000)
 }
 
 Speech.say = (message) => {
