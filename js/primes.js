@@ -93,7 +93,7 @@ let handleCorrect = () => {
 				setTimeout(() => {
 					Speech.pauseComputing = false
 				}, 4500)
-			}, 1000)
+			}, 500)
 			
 		}, 2500)
 

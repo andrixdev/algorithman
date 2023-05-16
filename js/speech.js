@@ -1,3 +1,5 @@
+console.log('speech.js version 4')
+
 let Speech = {}
 Speech.frozen = false
 Speech.pauseComputing = false
@@ -5,14 +7,17 @@ let voices
 let synth
 let rawSpeechNode = document.querySelector('p#raw-speech')
 let parsedSpeechNode = document.querySelector('p#parsed-speech')
-let rawSpeech = ""
+let speechArray = []
+let speechArrayIndex = 0 // Due to documented API bug, we have to store all transcripts separately in an array
+let fullSpeech = ""
+let latestSpeech = ""
 let parsedSpeech = ""
 
 // Speech parser
 let parseMap = [
     ["one", "1"], ["two", "2"], ["to", "2"], ["three", "3"], ["four", "4"], ["for", "4"], ["five", "5"], ["six", "6"], ["seven", "7"], ["eight", "8"], ["nine", "9"], ["zero", "0"], ["oh", "0"],
     ["times", "x"],
-    ["is", "="], ["equals", "="],
+    ["is", "="], ["equals", "="], ["equal", "="],
     ["Prime", "prime"]
 ]
 let currentOperation = []
@@ -24,7 +29,7 @@ let guessingIsInit = false
 
 let computeSpeech = (callback) => {
     if (Speech.pauseComputing) return false
-    let last = rawSpeech.toLowerCase().split('ok')
+    let last = fullSpeech.toLowerCase().split('ok')
     okCount = last.length
 
     // Maybe start new guessing!
@@ -36,7 +41,7 @@ let computeSpeech = (callback) => {
     }
 
     // Get bit of speech after last 'ok'
-    lastSpeech = last[last.length - 1]
+    let lastSpeech = last[last.length - 1]
 
     // Get bit of speech before last 'check'
     let check = lastSpeech.toLowerCase().split('check') // Last element should be empty string [..., '']
@@ -140,13 +145,15 @@ recognition.interimResults = true
 recognition.maxAlternatives = 1
 
 recognition.onresult = (event) => {
-    rawSpeech = ""
+    latestSpeech = ""
     Array.from(event.results).forEach((result) => {
-        rawSpeech = rawSpeech.concat(result[0].transcript)
+        latestSpeech = latestSpeech.concat(result[0].transcript)
     })
+    speechArray[speechArrayIndex] = latestSpeech
+    fullSpeech = speechArray.join(' ')
 
     let callback = () => {
-        rawSpeechNode.innerHTML = rawSpeech
+        rawSpeechNode.innerHTML = fullSpeech
         parsedSpeechNode.innerHTML = parsedSpeech
     }
 
@@ -159,10 +166,23 @@ recognition.onnomatch = () => {
     //diagnostic.textContent = "I didn't recognize that color."
 }
 recognition.onerror = (event) => {
-	let msg = `Error occurred in recognition: ${event.error}`
+	let msg = `Error occurred in recognition: ${event.error}. Restarting.`
     console.log(msg)
-	setTimeout(() => { Speech.say(msg) }, 5000)
+    recognition.start()
+	//setTimeout(() => { Speech.say(msg) }, 5000)
 }
+
+// Fix erratic stop https://stackoverflow.com/questions/34818154/webkitspeechrecognition-stops-recording-randomly
+let forceWork = setInterval(() => {
+    recognition.stop()
+}, 30000)
+recognition.onend = (event) => {
+    console.log('Forced periodic onend -> restarting')
+    recognition.start()
+    // Extend speechArray
+    speechArray.push("")
+    speechArrayIndex++
+ }
 
 Speech.say = (message) => {
     if (Speech.frozen) return false // Avoids stacking of instructions
