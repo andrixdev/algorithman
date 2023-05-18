@@ -1,0 +1,14 @@
+{
+    "name": "Algorithman",
+    "main": "index.js",
+    "version": "0.1.1",
+    "description": "Man being an algorithm",
+    "author": "Alex Andrix",
+    "homepage": "https://alexandrix.com",
+    "readmeFilename": "README.md",
+    "dependencies": {
+        "osc": "2.4.4",
+        "express": "4.17.1",
+        "ws": "7.5.3"
+    }
+}

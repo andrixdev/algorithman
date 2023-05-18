@@ -31,11 +31,12 @@
 	</div>
 	
 	<div id="capture">
-		<p id="now">Human is now processing...</p>
+		<canvas id="eeg-canvas" width="400" height="400"></canvas>
+		<p id="now" class="hidden">Human is now processing...</p>
 		<p id="processing">1</p>
 		<div id="speech">
-			<p id="raw-speech">...</p>
-			<p id="parsed-speech">...</p>
+			<p id="raw-speech"></p>
+			<p id="parsed-speech"></p>
 		</div>
 	</div>
 	
@@ -46,6 +47,9 @@
 <script type="text/javascript" src="./js/primes.js"></script>
 <script type="text/javascript" src="./js/main.js"></script>
 <script type="text/javascript" src="./js/speech.js"></script>
+<script type="text/javascript" src="./js/keyboard.js"></script>
 <script type="text/javascript" src="./js/mike-feedback.js"></script>
+<script type="text/javascript" src="./node_modules/osc/dist/osc-browser.min.js"></script>
+<script type="text/javascript" src="./js/eeg-muse2-by-osc.js"></script>
 
 </body>

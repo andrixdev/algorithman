@@ -83,11 +83,11 @@ let handleCorrect = () => {
 	Speech.pauseComputing = true
 	
 	setTimeout(() => {
-		Picker.captured = false
+		Picker.release()
 
 		setTimeout(() => {
-			Picker.captured = true
-			Picker.captureNext()
+			Picker.capture()
+
 			setTimeout(() => {
 				Speech.makeSenseOf() // Lasts about 4500ms
 				setTimeout(() => {

@@ -11,7 +11,8 @@ UI for a human playing the role of an algorithm
 * Install npm (https://docs.npmjs.com/downloading-and-installing-node-js-and-npm)
 * Install Git (https://git-scm.com/downloads)
 * Clone this repository on your machine
-* Open *index.html* in Google Chrome
+* Run **node .** in main directory to boot Node server with index.js
+* Open *localhost:8081* in Google Chrome
 
 # Compiling LESS into CSS
 * Install the LESS preprocessor (https://lesscss.org/usage/)

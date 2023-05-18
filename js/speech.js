@@ -1,5 +1,3 @@
-console.log('speech.js version 4')
-
 let Speech = {}
 Speech.frozen = false
 Speech.pauseComputing = false
@@ -18,7 +16,7 @@ let parseMap = [
     ["one", "1"], ["two", "2"], ["to", "2"], ["three", "3"], ["four", "4"], ["for", "4"], ["five", "5"], ["six", "6"], ["seven", "7"], ["eight", "8"], ["nine", "9"], ["zero", "0"], ["oh", "0"],
     ["times", "x"],
     ["is", "="], ["equals", "="], ["equal", "="],
-    ["Prime", "prime"]
+    ["Prime", "prime"], ["primed", "prime"]
 ]
 let currentOperation = []
 let numberToGuess
@@ -182,9 +180,10 @@ recognition.onend = (event) => {
     // Extend speechArray
     speechArray.push("")
     speechArrayIndex++
- }
+}
 
 Speech.say = (message) => {
+    if (!Main.activateTextToSpeech) return false
     if (Speech.frozen) return false // Avoids stacking of instructions
 
     Speech.frozen = true
@@ -217,7 +216,11 @@ Speech.incorrect = () => {
     Speech.say("Incorrect. Human, please, make sense of, " + Picker.next)
 }
 
-document.body.onclick = () => {
-    recognition.start()
-    console.log("Speech recognition started.")
-}
+document.addEventListener("DOMContentLoaded", () => {
+    if (Main.activateSpeechRecognition) {
+        //document.body.onclick = () => {
+            recognition.start()
+            console.log("Speech recognition started.")
+        //}
+    }
+})

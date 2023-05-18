@@ -8,10 +8,12 @@ html,
 body {
   border: none;
   margin: 0;
+}
+html {
   background: var(--background-color);
 }
 html.white-theme {
-  --background-color: #EAEAEA;
+  --background-color: white;
   --text-color: #2A2A2A;
   --intense-text-color: #0A0A0A;
   --faint-text-color: #888;
@@ -56,7 +58,7 @@ img {
 #world-pop p {
   font-size: 6rem;
   font-family: 'Raleway', 'Comic Sans MS', serif;
-  font-weight: 300;
+  font-weight: 200;
   color: var(--faint-text-color);
 }
 #world-pop p span {
@@ -66,10 +68,25 @@ img {
 }
 #capture {
   margin-top: 4rem;
+  position: relative;
+}
+#capture #eeg-canvas {
+  position: absolute;
+  top: -45px;
+  left: 0;
+  right: 0;
+  margin: auto;
+  z-index: -1;
 }
 #capture p#now {
   font-weight: 200;
   margin-bottom: 0;
+  opacity: 1;
+  transition: opacity 2s;
+  padding-left: 0.4em;
+}
+#capture p#now.hidden {
+  opacity: 0;
 }
 #capture p#processing {
   font-size: 10rem;

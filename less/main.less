@@ -7,10 +7,12 @@
 html, body {
 	border: none;
 	margin: 0;
-	background: var(--background-color)
+}
+html {
+    background: var(--background-color)
 }
 html.white-theme {
-    --background-color: #EAEAEA;
+    --background-color: white;//#EAEAEA;
     --text-color: #2A2A2A;
     --intense-text-color: #0A0A0A;
     --faint-text-color: #888;
@@ -52,7 +54,7 @@ img {
     p {
         font-size: 6rem;
         font-family: 'Raleway', 'Comic Sans MS', serif;
-        font-weight: 300;
+        font-weight: 200;
         color: var(--faint-text-color);
 
         span {
@@ -64,10 +66,27 @@ img {
 }
 #capture {
     margin-top: 4rem;
+    position: relative;
+
+    #eeg-canvas {
+        position: absolute;
+        top: -45px;
+        left: 0;
+        right: 0;
+        margin: auto;
+        z-index: -1;
+    }
 
     p#now {
         font-weight: 200;
         margin-bottom: 0;
+        opacity: 1;
+        transition: opacity 2s;
+        padding-left: .4em;
+
+        &.hidden {
+            opacity: 0;
+        }
     }
     p#processing {
         font-size: 10rem;
