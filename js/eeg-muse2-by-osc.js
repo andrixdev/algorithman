@@ -32,19 +32,22 @@ let c = document.getElementById('eeg-canvas')
 let ctx = c.getContext('2d')
 ctx.imageSmoothingEnabled = false
 ctx.strokeStyle = 'hsl(200, 83%, 42%)'
-ctx.lineWidth = 1.5
-let quickClean = false
-let w = 400
-let h = 400
+ctx.lineWidth = 2
+let w = 600
+let h = 600
 let cx = w / 2, cy = h / 2
-let rad = 100
+let rad = 92
 let angle = 0
 let x0 = cx + rad * Math.cos(angle)
 let y0 = cy + rad * Math.sin(angle)
 ctx.moveTo(x0, y0)
-let canvasFrame = () => {
-	ctx.fillStyle = 'rgba(255, 255, 255, ' + (quickClean ? 0.2 : 0.04) + ')'
-	ctx.fillRect(0, 0, w, h)
+EEG.quickClean = false
+EEG.cleanCanvas = () => {
+    ctx.fillStyle = (Main.theme == 'white-theme' ? 'rgba(255, 255, 255, ' : 'rgba(0, 0, 0, ') + (EEG.quickClean ? 0.2 : 0.04) + ')'
+    ctx.fillRect(0, 0, w, h)
+}
+EEG.canvasFrame = () => {
+	EEG.cleanCanvas()
 	ctx.beginPath()
 	let x1 = cx + rad * Math.cos(angle)
 	let y1 = cy + rad * Math.sin(angle)
@@ -55,17 +58,17 @@ let canvasFrame = () => {
 	ctx.moveTo(x1, y1)
 	ctx.lineTo(x2, y2)
 	ctx.stroke()
-	requestAnimationFrame(canvasFrame)
+	requestAnimationFrame(EEG.canvasFrame)
 }
-canvasFrame()
+EEG.canvasFrame()
 
 // Regularly full clean canvas
 let canvasInterval = setInterval(() => {
-	quickClean = true
+	EEG.quickClean = true
 	setTimeout(() => {
-		quickClean = false
+		EEG.quickClean = false
 	}, 1500)
-}, 60000)
+}, 25000)
 
 let oscPort = new osc.WebSocketPort({
     url: "ws://localhost:8081"

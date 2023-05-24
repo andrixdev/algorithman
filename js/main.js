@@ -4,6 +4,13 @@ Main.activateTextToSpeech = true
 Main.activateOwnVoiceEcho = true // used only if speech recognition is active
 Main.activateKeyboardControl = true
 Main.numberOfEmphasizedDigits = 3
+Main.theme = undefined
+
+Main.updateTheme = (newThemeName) => {
+    Main.theme = newThemeName
+    let htmlNode = document.getElementsByTagName('html')[0]
+    htmlNode.classList = Main.theme
+}
 
 // World population counter
 let timestamp1 = 1678265517712
@@ -80,3 +87,7 @@ let interval3 = setInterval(() => {
     }
 }, 200)
 
+
+document.addEventListener("DOMContentLoaded", () => {
+    Main.updateTheme('dark-theme')
+})

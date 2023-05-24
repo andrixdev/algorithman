@@ -4,6 +4,9 @@
     --intense-text-color: white;
     --faint-text-color: #AAA;
 }
+* {
+    transition: background-color 300ms ease-out, color 300ms ease-out;
+}
 html, body {
 	border: none;
 	margin: 0;
@@ -16,6 +19,9 @@ html.white-theme {
     --text-color: #2A2A2A;
     --intense-text-color: #0A0A0A;
     --faint-text-color: #888;
+}
+body {
+    overflow: hidden;
 }
 h1, h2, p, a {
 	font-family: 'Raleway', 'Comic Sans MS', serif;
@@ -70,7 +76,7 @@ img {
 
     #eeg-canvas {
         position: absolute;
-        top: -45px;
+        top: -145px;
         left: 0;
         right: 0;
         margin: auto;
