@@ -1,7 +1,7 @@
 let Main = {}
 Main.activateSpeechRecognition = true
 Main.activateTextToSpeech = true
-Main.activateOwnVoiceEcho = true // used only if speech recognition is active
+Main.activateOwnVoiceEcho = false // used only if speech recognition is active
 Main.activateKeyboardControl = true
 Main.numberOfEmphasizedDigits = 3
 Main.theme = undefined
