@@ -215,12 +215,3 @@ Speech.correct = () => {
 Speech.incorrect = () => {
     Speech.say("Incorrect. Human, please, make sense of, " + Picker.next)
 }
-
-document.addEventListener("DOMContentLoaded", () => {
-    if (Main.activateSpeechRecognition) {
-        //document.body.onclick = () => {
-            recognition.start()
-            console.log("Speech recognition started.")
-        //}
-    }
-})

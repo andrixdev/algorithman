@@ -23,6 +23,7 @@ html.white-theme {
 }
 body {
   overflow: hidden;
+  position: relative;
 }
 h1,
 h2,
@@ -30,6 +31,7 @@ p,
 a {
   font-family: 'Raleway', 'Comic Sans MS', serif;
   color: var(--text-color);
+  font-weight: 200;
   text-align: center;
 }
 p {
@@ -47,6 +49,7 @@ img {
   flex-flow: column;
 }
 .flexcenter {
+  justify-content: center;
   align-items: center;
 }
 #world-pop {
@@ -55,6 +58,7 @@ img {
 #world-pop h2,
 #world-pop p {
   margin: 0;
+  text-shadow: 0 0 1px var(--text-color);
 }
 #world-pop h2 {
   font-size: 3rem;
@@ -97,6 +101,7 @@ img {
 #capture p#processing {
   font-size: 10rem;
   font-family: 'Cormorant Garamond', 'Comic Sans MS', serif;
+  text-shadow: 0 0 1px var(--text-color);
   margin-top: 0em;
   margin-bottom: 0.2em;
 }
@@ -116,4 +121,102 @@ img {
 }
 #next p#slider-number.hidden {
   opacity: 0;
+}
+#click-to-start {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--background-color);
+  cursor: pointer;
+  user-select: none;
+  display: flex;
+  flex-flow: column;
+  justify-content: center;
+}
+#click-to-start.hidden {
+  display: none;
+}
+#click-to-start h1 {
+  font-size: 8rem;
+  margin: 8rem auto 0;
+  text-shadow: 0 0 12px var(--text-color);
+}
+#click-to-start h2 {
+  font-size: 2rem;
+  margin-top: 0em;
+  text-shadow: 0 0 6px var(--text-color);
+}
+#click-to-start p#click {
+  margin: 1rem auto 4rem;
+  font-size: 4rem;
+  animation: glow 1s infinite alternate ease-out;
+  text-shadow: 0 0 4px var(--text-color);
+  text-transform: uppercase;
+}
+#click-to-start #theme-switch {
+  opacity: 0.75;
+  margin-bottom: -1rem;
+}
+#click-to-start #theme-switch .arrow {
+  width: 25px;
+  height: 25px;
+  border-radius: 4px;
+  border: solid 1px var(--text-color);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 4px 3px;
+}
+#click-to-start #theme-switch .arrow p {
+  margin: 0;
+  font-size: 12px;
+}
+#click-to-start #theme-switch p {
+  font-size: 0.8rem;
+  margin: 0.5em 0.8em;
+}
+#click-to-start #chrome img,
+#click-to-start #muse-2 img {
+  width: 30px;
+  border-radius: 50%;
+}
+#click-to-start #chrome p,
+#click-to-start #muse-2 p {
+  font-size: 0.8rem;
+  margin-left: 10px;
+}
+#click-to-start #muse-2 {
+  margin-top: 1rem;
+  margin-bottom: -0.5rem;
+}
+#click-to-start #muse-2 img {
+  border: solid 1px #DDD;
+}
+#click-to-start #chrome {
+  margin-top: 0px;
+}
+#click-to-start #chrome img {
+  width: 60px;
+}
+#click-to-start #chrome p {
+  margin-left: -10px;
+}
+html.white-theme #click-to-start h1 {
+  text-shadow: 0 0 2px var(--text-color);
+}
+html.white-theme #click-to-start h2 {
+  text-shadow: 0 0 2px var(--text-color);
+}
+html.white-theme #click-to-start p {
+  text-shadow: 0 0 2px var(--text-color);
+}
+@keyframes glow {
+  from {
+    opacity: 0.3;
+  }
+  to {
+    opacity: 1;
+  }
 }

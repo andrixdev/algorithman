@@ -43,7 +43,7 @@ let y0 = cy + rad * Math.sin(angle)
 ctx.moveTo(x0, y0)
 EEG.quickClean = false
 EEG.cleanCanvas = () => {
-    ctx.fillStyle = (Main.theme == 'white-theme' ? 'rgba(255, 255, 255, ' : 'rgba(0, 0, 0, ') + (EEG.quickClean ? 0.2 : 0.04) + ')'
+    ctx.fillStyle = (Main.theme == 'white-theme' ? 'rgba(255, 255, 255, ' : 'rgba(0, 0, 0, ') + (EEG.quickClean ? 0.5 : 0.02) + ')'
     ctx.fillRect(0, 0, w, h)
 }
 EEG.canvasFrame = () => {

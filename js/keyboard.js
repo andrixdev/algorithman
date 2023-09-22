@@ -17,6 +17,9 @@ document.addEventListener("DOMContentLoaded", () => {
                 let htmlNode = document.getElementsByTagName('html')[0]
                 Main.updateTheme(Main.theme == 'white-theme' ? 'dark-theme' : 'white-theme')
                 EEG.quickClean = true
+                setTimeout(() => {
+                    EEG.quickClean = false
+                }, 1500)
             }
         }
 	})

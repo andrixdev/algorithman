@@ -11,14 +11,27 @@ Main.updateTheme = (newThemeName) => {
     let htmlNode = document.getElementsByTagName('html')[0]
     htmlNode.classList = Main.theme
 }
+Main.clickToStart = () => {
+    let cts = document.getElementById('click-to-start')
+    cts.addEventListener('click', (e) => {
+        // Hide view
+        cts.classList.toggle('hidden', true)
+
+        // Start speech recognition
+        if (Main.activateSpeechRecognition) {
+            recognition.start()
+            console.log("Speech recognition started.")
+        }
+    })
+}
 
 // World population counter
-let timestamp1 = 1678265517712
-let pop1 = 8020716316
-let timestamp2 = 1680008052793
-let pop2 = 8024412581
+let timestamp1 = 1695316266198
+let pop1 = 8061972470
+let timestamp2 = 1695367622318
+let pop2 = 8062092200
 let diff = pop2 - pop1
-let proportionOfDead = 25268711 / 50461412
+let proportionOfDead = 44005983 / 97253064
 let speed = (pop2 - pop1) / (timestamp2 - timestamp1)
 let deathSpeed = speed * proportionOfDead
 let bornSpeed = speed * (1 + proportionOfDead)
@@ -90,4 +103,5 @@ let interval3 = setInterval(() => {
 
 document.addEventListener("DOMContentLoaded", () => {
     Main.updateTheme('dark-theme')
+    Main.clickToStart()
 })
