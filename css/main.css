@@ -4,6 +4,36 @@
   --intense-text-color: white;
   --faint-text-color: #AAA;
 }
+@font-face {
+  font-family: "Raleway";
+  src: local("Raleway Thin"), url("../fonts/Raleway-Thin.ttf");
+  font-weight: 100;
+}
+@font-face {
+  font-family: "Raleway";
+  src: local("Raleway ExtraLight"), url("../fonts/Raleway-ExtraLight.ttf");
+  font-weight: 200;
+}
+@font-face {
+  font-family: "Raleway";
+  src: local("Raleway Light"), url("../fonts/Raleway-Light.ttf");
+  font-weight: 300;
+}
+@font-face {
+  font-family: "Raleway";
+  src: local("Raleway"), url("../fonts/Raleway-Regular.ttf");
+  font-weight: 400;
+}
+@font-face {
+  font-family: "Cormorant Garamond";
+  src: local("Cormorant Garamond Light"), url("../fonts/CormorantGaramond-Light.ttf");
+  font-weight: 300;
+}
+@font-face {
+  font-family: "Cormorant Garamond";
+  src: local("Cormorant Garamond"), url("../fonts/CormorantGaramond-Regular.ttf");
+  font-weight: 400;
+}
 * {
   transition: background-color 300ms ease-out, color 300ms ease-out;
 }
@@ -73,8 +103,6 @@ img {
 }
 #world-pop p span {
   color: var(--intense-text-color);
-  /*font-family: 'Cormorant Garamond', 'Comic Sans MS', serif;
-            font-size: 8rem;*/
 }
 #capture {
   margin-top: 4rem;
