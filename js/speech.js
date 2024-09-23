@@ -14,7 +14,7 @@ let parsedSpeech = ""
 // Speech parser
 let parseMap = [
     ["one", "1"], ["two", "2"], ["to", "2"], ["three", "3"], ["four", "4"], ["for", "4"], ["five", "5"], ["six", "6"], ["seven", "7"], ["eight", "8"], ["nine", "9"], ["zero", "0"], ["oh", "0"],
-    ["times", "x"],
+    ["times", "x"], ["*", "x"],
     ["is", "="], ["equals", "="], ["equal", "="],
     ["Prime", "prime"], ["primed", "prime"]
 ]
