@@ -32,7 +32,7 @@ udpPort.on("ready", function () {
     ipAddresses.forEach(function (address) {
         console.log(" Host:", address + ", Port:", udpPort.options.localPort);
     });
-    console.log("To start the demo, go to http://localhost:8081 in your web browser.");
+    console.log("To start the demo, go to http://localhost:8084 in your web browser.");
 });
 
 udpPort.open();
@@ -40,7 +40,7 @@ udpPort.open();
 // Create an Express-based Web Socket server to which OSC messages will be relayed.
 var appResources = __dirname// + "/web",
     app = express(),
-    server = app.listen(8081),
+    server = app.listen(8084),
     wss = new WebSocket.Server({
         server: server
     });

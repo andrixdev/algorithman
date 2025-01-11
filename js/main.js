@@ -26,12 +26,12 @@ Main.clickToStart = () => {
 }
 
 // World population counter
-let timestamp1 = 1695316266198
-let pop1 = 8061972470
-let timestamp2 = 1695367622318
-let pop2 = 8062092200
+let timestamp1 = 1736615105396
+let pop1 = 8199323230
+let timestamp2 = 1736615407235
+let pop2 = 8199323900
 let diff = pop2 - pop1
-let proportionOfDead = 44005983 / 97253064
+let proportionOfDead = 1838600 / 3901912
 let speed = (pop2 - pop1) / (timestamp2 - timestamp1)
 let deathSpeed = speed * proportionOfDead
 let bornSpeed = speed * (1 + proportionOfDead)

@@ -183,10 +183,11 @@ recognition.onend = (event) => {
 }
 
 Speech.say = (message) => {
+    
     if (!Main.activateTextToSpeech) return false
     if (Speech.frozen) return false // Avoids stacking of instructions
 
-    Speech.frozen = true
+    //Speech.frozen = true
 
     // Init speech synthesis (text-to-speech)
     synth = window.speechSynthesis
